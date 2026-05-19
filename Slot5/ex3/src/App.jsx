@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap'
 
 import Banner from './components/Banner'
+import NavBar from './components/NavBar'
 import Profile from './components/Profile'
 import Orchids from './components/Orchids'
 
@@ -12,7 +13,9 @@ import Orchids from './components/Orchids'
 function App() {
 
   return (
-    <Container className="mt-4">
+    <>
+      <NavBar />
+      <Container className="mt-4">
 
 {/* 
       <h1 className="mb-4">
@@ -46,6 +49,7 @@ function App() {
       <Orchids />
 
     </Container>
+    </>
   )
 }
 
