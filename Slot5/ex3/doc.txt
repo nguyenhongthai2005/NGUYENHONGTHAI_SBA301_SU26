@@ -1,0 +1,8 @@
+phan biet defaut export va name export
+bang chat cua container, row, collumm
+alert 
+
+
+Yeu Cau lab2: An vao detail hien thi ra thong tin chi tiet 
+                From submit 
+                use State 
