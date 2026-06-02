@@ -1,0 +1,86 @@
+name: GitHub Classroom Autograding
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  autograding:
+    name: Autograding
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout student repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ─────────────────────────────────────────────────────────
+      # OPTION A — Hidden tests từ private repository (RECOMMENDED)
+      # Cần tạo secret HIDDEN_TESTS_TOKEN trong GitHub Classroom org
+      # Bỏ comment block dưới đây và điền đúng ORG/REPO:
+      # ─────────────────────────────────────────────────────────
+      # - name: Download hidden tests
+      #   env:
+      #     TOKEN: ${{ secrets.HIDDEN_TESTS_TOKEN }}
+      #   run: |
+      #     git clone https://x-access-token:${TOKEN}@github.com/YOUR_ORG/sba301-hidden-tests.git _hidden
+      #     cp -r _hidden/tests/* tests/
+      #     rm -rf _hidden
+
+      # ─────────────────────────────────────────────────────────
+      # OPTION B — Tests đã có sẵn trong repo (dùng khi demo/thử nghiệm)
+      # ─────────────────────────────────────────────────────────
+
+      - name: Run all tests
+        id: run-tests
+        run: npm test -- --reporter=verbose --reporter=json --outputFile=test-results.json
+        continue-on-error: true
+
+      - name: Parse test results
+        if: always()
+        run: |
+          if [ -f test-results.json ]; then
+            echo "=== TEST SUMMARY ==="
+            node -e "
+              const r = require('./test-results.json');
+              const passed = r.numPassedTests || 0;
+              const failed = r.numFailedTests || 0;
+              const total  = r.numTotalTests  || 0;
+              console.log('Passed:', passed, '/', total);
+              console.log('Failed:', failed);
+            " 2>/dev/null || echo "Could not parse results"
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ github.sha }}
+          path: test-results.json
+          retention-days: 30
+
+      - name: Check test outcome
+        if: steps.run-tests.outcome == 'failure'
+        run: |
+          echo "❌ Một số test chưa pass. Xem chi tiết ở bước 'Run all tests'."
+          exit 1
+
+      - name: All tests passed
+        if: steps.run-tests.outcome == 'success'
+        run: echo "✅ Tất cả tests đã pass!"
