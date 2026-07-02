@@ -1,0 +1,15 @@
+node_modules
+package-lock.json
+dist
+coverage
+.env
+package.json
+tsconfig.json
+.vscode
+.idea
+.DS_Store
+*.log
+*.tsbuildinfo
+# Ignore build output
+build
+    
