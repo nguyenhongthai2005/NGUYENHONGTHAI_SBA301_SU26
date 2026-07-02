@@ -1,0 +1,6 @@
+com\fucar\model\BaseModel.class
+com\fucar\MainApp.class
+com\fucar\controller\LoginController.class
+com\fucar\model\Student.class
+com\fucar\controller\DetailController.class
+com\fucar\controller\ListController.class

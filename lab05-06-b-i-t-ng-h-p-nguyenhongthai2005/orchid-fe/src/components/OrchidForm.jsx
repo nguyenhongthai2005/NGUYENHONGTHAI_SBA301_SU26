@@ -126,6 +126,7 @@ const OrchidForm = ({ initialData, onSubmit, loading }) => {
           placeholder="Nhập mô tả..."
         />
       </Form.Group>
+      
 
       <Button variant="primary" type="submit" disabled={loading}>
         {loading ? 'Đang xử lý...' : 'Lưu Orchid'}

@@ -27,5 +27,16 @@ public class DataInit implements CommandLineRunner {
             userRepository.save(admin);
             System.out.println("Đã tạo tài khoản ADMIN mặc định: admin@gmail.com / 123456");
         }
+
+        if (userRepository.findByEmail("user@gmail.com").isEmpty()) {
+            User user = User.builder()
+                    .fullName("User")
+                    .email("user@gmail.com")
+                    .password(passwordEncoder.encode("123456"))
+                    .role(Role.USER)
+                    .build();
+            userRepository.save(user);
+            System.out.println("Đã tạo tài khoản USER mặc định: user@gmail.com / 123456");
+        }
     }
 }
